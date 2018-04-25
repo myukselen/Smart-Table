@@ -47,6 +47,8 @@ ng.module('smart-table').controller('stTableController', [
       }
     }
 
+    this.deepDelete = deepDelete;
+
     if ($attrs.stSafeSrc) {
       safeGetter = $parse($attrs.stSafeSrc);
       $scope.$watch(

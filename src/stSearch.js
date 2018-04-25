@@ -12,7 +12,13 @@ ng.module('smart-table')
         attr.$observe('stSearch', function (newValue, oldValue) {
           var input = element[0].value;
           if (newValue !== oldValue && input) {
-            ctrl.tableState().search = {};
+            //ctrl.tableState().search = {};  // MYN FIXME: why wipe all of them???
+            if (oldValue !== undefined && tableCtrl.tableState().search && tableCtrl.tableState().search.predicateObject) {
+              var predicateObjectSaved = tableCtrl.tableState().search.predicateObject;
+              tableCtrl.deepDelete(predicateObjectSaved, oldValue);
+              tableCtrl.tableState().search = {};
+              tableCtrl.tableState().search.predicateObject = predicateObjectSaved;
+            }
             input = ng.isString(input) && trimSearch ? input.trim() : input;
             tableCtrl.search(input, newValue);
           }
